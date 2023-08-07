@@ -2,16 +2,16 @@
   "name": "animation",
   "private": true,
   "version": "0.0.0",
-  "type": "module",
   "scripts": {
     "dev": "vite",
-    "dev:p":"node build/dev",
+    "dev:p": "node build/dev",
     "build": "vue-tsc --noEmit && vite build",
     "build:p": "node build",
     "preview": "vite preview"
   },
   "dependencies": {
     "@animxyz/vue3": "^0.6.7",
+    "@lucky-canvas/vue": "^0.1.11",
     "@vant/touch-emulator": "^1.4.0",
     "autoprefixer": "^10.4.14",
     "axios": "^1.4.0",

@@ -1,6 +1,6 @@
 import router from "./route";
 import { useUserStore } from "@/store/user";
-const whiteList = ["/login"];
+const whiteList = ["/"];
 
 router.beforeEach((to, from, next) => {
   const userStore = useUserStore();

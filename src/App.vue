@@ -1,10 +1,8 @@
 <template>
   <van-config-provider>
-    <section>
-      <main class="container mx-auto min-h-screen">
-        <router-view class="h-screen" />
-      </main>
-    </section>
+    <main class="container mx-auto min-h-screen">
+      <router-view />
+    </main>
   </van-config-provider>
 </template>
 <style lang="postcss">

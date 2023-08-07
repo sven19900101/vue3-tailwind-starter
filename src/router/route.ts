@@ -2,39 +2,12 @@ import { createRouter, createWebHistory } from "vue-router";
 import { $t } from "@/i18n/index";
 const routes = [
   {
-    path: "/login",
-    name: "login",
-    meta: { title: $t("login") },
-    component: () => import("@/views/user/login.vue"),
-  },
-  {
     path: "/",
-    redirect: "/grabList",
+    // redirect: "/lucky",
     name: "index",
     meta: { title: "index" },
-    component: () => import("@/views/index.vue"),
-    children: [
-      {
-        path: "grabList",
-        meta: { title: $t("qdlb") },
-        name: "grabList",
-        component: () => import("@/views/userOrder/grabOrderList.vue"),
-      },
-      {
-        path: "myOrderlist",
-        meta: { title: $t("wddd") },
-        name: "myOrderlist",
-        component: () => import("@/views/userOrder/myOrderlist.vue"),
-      },
-    ],
+    component: () => import("@/views/luckyCanvas/index.vue"),
   },
-  {
-    path: "/certificate",
-    name: "certificate",
-    meta: { title: $t("scpz") },
-    component: () => import("@/views/userOrder/certificate.vue"),
-  },
-
   {
     path: "/:catchAll(.*)*",
     name: "404",

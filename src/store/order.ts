@@ -2,25 +2,18 @@ import { defineStore } from "pinia";
 import { getOrderState, getAssociateType } from "@/api/orders";
 export const useOrderStore = defineStore("order", {
   state: () => ({
-    orderState: [],
-    associateType: [],
+    remainTime: 5,
+    totalLucyTime: 5,
   }),
   actions: {
-    getOrderState() {
-      getOrderState().then((res) => {
-        this.orderState = res.data;
-      });
-    },
-    getAssociateType() {
-      getAssociateType().then((res) => {
-        this.associateType = res.data;
-      });
+    setRemainTime(value: number) {
+      this.remainTime = value;
     },
   },
   persist: [
     {
-      paths: ["orderState", "associateType"],
-      storage: sessionStorage,
+      paths: ["remainTime"],
+      storage: localStorage,
     },
   ],
 });
