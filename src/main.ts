@@ -17,9 +17,8 @@ import App from "./App.vue";
 import pinia from "@/store/index";
 import router from "./router/route";
 import "@/router/permission";
-import VueLuckyCanvas from '@lucky-canvas/vue'
 export const app = createApp(App);
-app.use(router).use(pinia).use(VueAnimXyz).use(VueLuckyCanvas);
+app.use(router).use(pinia).use(VueAnimXyz);
 app.use(i18n);
 app.config.globalProperties.$t = $t;
 app.mount("#app");

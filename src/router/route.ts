@@ -6,7 +6,7 @@ const routes = [
     // redirect: "/lucky",
     name: "index",
     meta: { title: "index" },
-    component: () => import("@/views/luckyCanvas/index.vue"),
+    component: () => import("@/views/index.vue"),
   },
   {
     path: "/:catchAll(.*)*",
