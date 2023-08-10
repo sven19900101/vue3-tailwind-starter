@@ -13,7 +13,10 @@
         :finished-text="$t('mygdl')"
         @load="onLoad"
       >
-        <van-empty v-if="list.length === 0" :description="$t('zwsj')" />
+        <van-empty
+          v-if="list.length === 0 && !loading"
+          :description="$t('zwsj')"
+        />
 
         <template v-else>
           <li

@@ -1,3 +1,7 @@
+const module = await import(
+  `../platform-static/${process.env.plat || "0-演示站"}/config.js`
+);
+export const appConfig = module.default;
 import { createApp } from "vue";
 import "./index.css";
 import "@vant/touch-emulator";
@@ -16,10 +20,14 @@ import "@animxyz/core";
 import App from "./App.vue";
 import pinia from "@/store/index";
 import router from "./router/route";
+
 import "@/router/permission";
-export const app = createApp(App);
-app.use(router).use(pinia).use(VueAnimXyz);
-app.use(i18n);
-app.config.globalProperties.$t = $t;
-app.mount("#app");
-console.log(import.meta.env.VITE_APP_UPLOAD_URL);
+import appInit from "@/utils/appInit";
+appInit().then(async () => {
+  const app = createApp(App);
+  app.use(router).use(pinia).use(VueAnimXyz);
+  app.provide("appConfig", appConfig);
+  app.use(i18n);
+  app.config.globalProperties.$t = $t;
+  app.mount("#app");
+});
