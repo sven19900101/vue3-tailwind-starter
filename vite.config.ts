@@ -3,58 +3,60 @@ import vue from "@vitejs/plugin-vue";
 import Components from "unplugin-vue-components/vite";
 import { VantResolver } from "unplugin-vue-components/resolvers";
 import { resolve } from "path";
-import topLevelAwait from "vite-plugin-top-level-await";
 // https://vitejs.dev/config/
 export default defineConfig(({ command, mode }) => {
+  const platform = process.env.plat;
+  let platformParts = platform && platform.split("-");
   const env = loadEnv(
     mode,
-    mode === "production" && process.env.plat
-      ? resolve(__dirname, `./platform-static/${process.env.plat}`)
-      : process.env.plat
-      ? resolve(__dirname, `./platform-static/${process.env.plat}`)
+    mode === "production" && platform
+      ? resolve(__dirname, `./platform-static/${platform}`)
+      : platform
+      ? resolve(__dirname, `./platform-static/${platform}`)
       : process.cwd(),
     "",
   );
 
   return {
-    define: {
-      "process.env": env,
-    },
+    // define: {
+    //   "process.env": env,
+    // },
     plugins: [
       vue(),
       Components({
         resolvers: [VantResolver()],
       }),
-      //main.ts 动态引入文件
-      topLevelAwait({
-        // The export name of top-level await promise for each chunk module
-        promiseExportName: "__tla",
-        // The function to generate import names of top-level await promise in each chunk module
-        promiseImportName: (i) => `__tla_${i}`,
-      }),
     ],
     publicDir:
-      mode === "production" && process.env.plat
-        ? resolve(__dirname, `./platform-static/${process.env.plat}/public`)
+      mode === "production" && platform
+        ? resolve(__dirname, `./platform-static/${platform}/public`)
         : resolve(
             __dirname,
-            process.env.plat
-              ? `./platform-static/${process.env.plat}/public`
-              : "./public",
+            platform ? `./platform-static/${platform}/public` : "./public",
           ),
     envDir:
-      mode === "production" && process.env.plat
-        ? resolve(__dirname, `./platform-static/${process.env.plat}`)
-        : process.env.plat
-        ? resolve(__dirname, `./platform-static/${process.env.plat}`)
+      mode === "production" && platform
+        ? resolve(__dirname, `./platform-static/${platform}`)
+        : platform
+        ? resolve(__dirname, `./platform-static/${platform}`)
         : __dirname,
     css: {
       devSourcemap: true,
     },
     build: {
       emptyOutDir: true,
-      outDir: process.env.plat
-        ? resolve(__dirname, `./dist/派单_${process.env.plat}_H5`)
+      rollupOptions: {
+        output: {
+          entryFileNames: "static/js/[name].[hash].js",
+          chunkFileNames: "static/js/[name]-[hash].js",
+          assetFileNames: "static/assets/[name].[hash][extname]",
+        },
+      },
+      outDir: platform
+        ? resolve(
+            __dirname,
+            `./dist/派单_${platformParts[1]}_${platformParts[2]}_H5`,
+          )
         : resolve(__dirname, "./dist/dist"),
     },
     resolve: {

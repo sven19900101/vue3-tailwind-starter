@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from "vue-router";
 import { $t } from "@/i18n/index";
+
 const routes = [
   {
     path: "/login",

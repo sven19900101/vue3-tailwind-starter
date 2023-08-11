@@ -1,5 +1,5 @@
-import { appConfig } from "@/main";
 import { useAppStore } from "@/store/app";
+import appConfig from "@/utils/config";
 export default () => {
   return new Promise<void>((resolve, reject) => {
     const appStore = useAppStore();
