@@ -14,7 +14,7 @@
 //   landscape: false, // 是否处理横屏情况
 // };
 
-module.exports= {
+module.exports = {
   plugins: {
     "postcss-import": {},
     "tailwindcss/nesting": {},

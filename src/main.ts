@@ -16,9 +16,15 @@ import "@animxyz/core";
 import App from "./App.vue";
 import pinia from "@/store/index";
 import router from "./router/route";
+import appConfig from "@/utils/config";
 import "@/router/permission";
-export const app = createApp(App);
-app.use(router).use(pinia).use(VueAnimXyz);
-app.use(i18n);
-app.config.globalProperties.$t = $t;
-app.mount("#app");
+import appInit from "@/utils/appInit";
+
+appInit().then(async () => {
+  const app = createApp(App);
+  app.use(router).use(pinia).use(VueAnimXyz);
+  app.provide("appConfig", appConfig);
+  app.use(i18n);
+  app.config.globalProperties.$t = $t;
+  app.mount("#app");
+});

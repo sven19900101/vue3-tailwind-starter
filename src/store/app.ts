@@ -1,11 +1,10 @@
 import { defineStore } from "pinia";
-
 export const useAppStore = defineStore("app", {
   state: () => ({
-    appName: "综合",
+    appName: "纵横",
     device: "H5",
     language: "zh",
-    currencySymbol: "￥",
+    currencySymbol: "¥",
   }),
   actions: {
     setAppName(appName: string) {

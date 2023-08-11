@@ -1,7 +1,7 @@
 import c_process from "child_process";
 import inquirer from "inquirer";
 import ora from "ora";
-import { getPlatformName } from "./utils/index.js";
+import { getPlatformName, migrationAssets } from "./utils/index.js";
 
 (async function () {
   let spinner = null;
@@ -14,27 +14,30 @@ import { getPlatformName } from "./utils/index.js";
         choices: await getPlatformName(),
       },
     ]);
-    spinner = ora("开始打包..."+'\n').start();
-   let ls= c_process.exec(
+    migrationAssets(
+      "./platform-static/" + result.name + "/config.ts",
+      "./src/utils",
+    );
+    spinner = ora("开始打包..." + "\n").start();
+    let ls = c_process.exec(
       `vue-tsc --noEmit && vite build`,
       {
-        env:{
+        env: {
           ...process.env,
-        plat:result.name
-        }
+          plat: result.name,
+        },
       },
       function (error, stdout) {
         error && console.log("error:" + error);
-       
+
         spinner.succeed("打包完成");
       },
     );
-    ls.stdout.on('data',data=>{
+    ls.stdout.on("data", (data) => {
       console.log(data);
-    })
+    });
   } catch (err) {
     spinner.fail("打包出错");
     console.error(err);
   }
-  
 })();

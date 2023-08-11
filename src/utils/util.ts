@@ -2,7 +2,7 @@
  * 参数处理
  * @param {*} params  参数
  */
-export function tansParams(params) {
+export function tansParams(params: any) {
   let result = "";
   for (const propName of Object.keys(params)) {
     const value = params[propName];

@@ -1,11 +1,26 @@
-import { defineConfig } from "vite";
+import { defineConfig, loadEnv } from "vite";
 import vue from "@vitejs/plugin-vue";
 import Components from "unplugin-vue-components/vite";
 import { VantResolver } from "unplugin-vue-components/resolvers";
 import { resolve } from "path";
 // https://vitejs.dev/config/
 export default defineConfig(({ command, mode }) => {
+  const platform = process.env.plat;
+  let platformParts = platform && platform.split("-");
+  const env = loadEnv(
+    mode,
+    mode === "production" && platform
+      ? resolve(__dirname, `./platform-static/${platform}`)
+      : platform
+      ? resolve(__dirname, `./platform-static/${platform}`)
+      : process.cwd(),
+    "",
+  );
+
   return {
+    // define: {
+    //   "process.env": env,
+    // },
     plugins: [
       vue(),
       Components({
@@ -13,29 +28,34 @@ export default defineConfig(({ command, mode }) => {
       }),
     ],
     publicDir:
-      mode === "production" && process.env.plat
-        ? resolve(__dirname, `./platform-static/${process.env.plat}/public`)
+      mode === "production" && platform
+        ? resolve(__dirname, `./platform-static/${platform}/public`)
         : resolve(
             __dirname,
-            process.env.plat
-              ? `./platform-static/${process.env.plat}/public`
-              : "./public",
+            platform ? `./platform-static/${platform}/public` : "./public",
           ),
     envDir:
-      mode === "production" && process.env.plat
-        ? resolve(__dirname, `./platform-static/${process.env.plat}`)
-        : process.env.plat
-        ? resolve(__dirname, `./platform-static/${process.env.plat}`)
+      mode === "production" && platform
+        ? resolve(__dirname, `./platform-static/${platform}`)
+        : platform
+        ? resolve(__dirname, `./platform-static/${platform}`)
         : __dirname,
     css: {
       devSourcemap: true,
     },
     build: {
       emptyOutDir: true,
-      outDir: process.env.plat
+      rollupOptions: {
+        output: {
+          entryFileNames: "static/js/[name].[hash].js",
+          chunkFileNames: "static/js/[name]-[hash].js",
+          assetFileNames: "static/assets/[name].[hash][extname]",
+        },
+      },
+      outDir: platform
         ? resolve(
             __dirname,
-            `./dist/派单_${process.env.plat}_H5`.replace(/-/g, "_"),
+            `./dist/派单_${platformParts[1]}_${platformParts[2]}_H5`,
           )
         : resolve(__dirname, "./dist/dist"),
     },
@@ -51,7 +71,7 @@ export default defineConfig(({ command, mode }) => {
       proxy: {
         // https://cn.vitejs.dev/config/#server-proxy
         "/dev-api": {
-          target: "http://192.168.0.4:8083/",
+          target: env.VITE_APP_BASE_URL,
           changeOrigin: true,
           rewrite: (p) => p.replace(/^\/dev-api/, ""),
         },

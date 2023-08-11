@@ -9,7 +9,9 @@ import { $t } from "@/i18n/index";
 // 创建axios实例
 const service = axios.create({
   // axios中请求配置有baseURL选项，表示请求URL公共部分
-  baseURL: import.meta.env.VITE_APP_BASE_URL,
+  baseURL: import.meta.env.DEV
+    ? import.meta.env.VITE_APP_DEV_URL
+    : import.meta.env.VITE_APP_BASE_URL,
   // 超时
   timeout: 30000,
   headers: {

@@ -11,16 +11,16 @@ let messages = {
   ja,
 };
 
-const i18n = createI18n({
-  locale: store.language || "en", // 默认语言
-  // locale: localStorage.getItem("language") || "en", // 默认语言
-  fallbackLocale: "en", // 获取key失败后选择默认语言
-  legacy: false, // 如果要支持compositionAPI，此项必须设置为false;
-  globalInjection: true, //$t
-  silentTranslationWarn: true,
-  messages,
-});
-
-const $t = (data: string) => i18n.global.t(data);
+const i18n = () => {
+  return createI18n({
+    locale: store.language || "en", // 默认语言
+    fallbackLocale: "en", // 获取key失败后选择默认语言
+    legacy: false, // 如果要支持compositionAPI，此项必须设置为false;
+    globalInjection: true, //$t
+    silentTranslationWarn: true,
+    messages,
+  });
+};
+const $t = (data: string) => i18n().global.t(data);
 
 export { i18n, $t };
